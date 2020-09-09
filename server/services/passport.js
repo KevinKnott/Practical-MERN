@@ -15,12 +15,24 @@ passport.use(
         callbackURL: "/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     }, (accessToken, refreshToken, profile, cb) => {
-        console.log(profile.id);
+        // console.log(profile.id);
         // User.findOrCreate({ googleId: profile.id }, function (err, user) {
         //     return cb(err, user);
         // });
+        const potentialUser = { googleId: profile.id };
 
-        new User({ googleId: profile.id }).save();
-        console.log("Saved", profile.Id);
+        User.findOne(potentialUser, (err, foundUser) => {
+            if (err) {
+                console.log(err);
+            } else {
+
+                if (foundUser) {
+                    console.log("Nothing to do user already exists");
+                }
+                else {
+                    new User(potentialUser).save();
+                }
+            }
+        });
     })
 );
