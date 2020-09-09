@@ -1,5 +1,4 @@
 const passport = require('passport');
-require('dotenv').config({ path: 'D:\\Practical MERN\\server\\.env' });
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
@@ -12,5 +11,5 @@ passport.use(
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-    }, (accessToken) => { console.log(accessToken); })
+    }, (accessToken, refreshToken, profile, cb) => { console.log(profile); })
 );
