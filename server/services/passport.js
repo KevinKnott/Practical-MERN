@@ -5,6 +5,16 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const User = mongoose.model('users');
 
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    User.findById(id, (err, foundUser) => {
+        done(err, user);
+    });
+});
+
 //  Make sure that we are using passport specifically with Google OAuth2.0
 //  Passport.use can be added multiple times for different strategies
 // const callbackURI = "http://localhost:" + process.env.PORT + "/auth/google/callback";
@@ -14,25 +24,30 @@ passport.use(
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-    }, (accessToken, refreshToken, profile, cb) => {
+    }, (accessToken, refreshToken, profile, done) => {
         // console.log(profile.id);
-        // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        //     return cb(err, user);
-        // });
         const potentialUser = { googleId: profile.id };
 
         User.findOne(potentialUser, (err, foundUser) => {
             if (err) {
-                console.log(err);
+                return done(err);
             } else {
-
                 if (foundUser) {
-                    console.log("Nothing to do user already exists");
+                    console.log(foundUser);
+                    return done(null, foundUser);
                 }
                 else {
-                    new User(potentialUser).save();
+                    foundUser = new User(potentialUser);
+                    foundUser.save((err) => {
+                        if (err) {
+                            return done(err);
+                        } else {
+                            return done(err, foundUser);
+                        }
+                    });
                 }
             }
         });
+
     })
 );
