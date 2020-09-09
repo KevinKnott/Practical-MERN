@@ -1,6 +1,9 @@
 const passport = require('passport');
+const mongoose = require('mongoose');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
+
+const User = mongoose.model('users');
 
 //  Make sure that we are using passport specifically with Google OAuth2.0
 //  Passport.use can be added multiple times for different strategies
@@ -11,5 +14,13 @@ passport.use(
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-    }, (accessToken, refreshToken, profile, cb) => { console.log(profile); })
+    }, (accessToken, refreshToken, profile, cb) => {
+        console.log(profile.id);
+        // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        //     return cb(err, user);
+        // });
+
+        new User({ googleId: profile.id }).save();
+        console.log("Saved", profile.Id);
+    })
 );
