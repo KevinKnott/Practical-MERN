@@ -23,7 +23,8 @@ passport.use(
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "/auth/google/callback",
-        userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+        userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+        proxy: true
     }, (accessToken, refreshToken, profile, done) => {
         // console.log(profile.id);
         const potentialUser = { googleId: profile.id };
