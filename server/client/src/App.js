@@ -19,6 +19,9 @@ function App() {
           Learn React
         </a>
       </header>
+      <body>
+        <a href="/auth/google" >Sign in with Google</a>
+      </body>
     </div>
   );
 }
