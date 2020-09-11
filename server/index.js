@@ -13,7 +13,7 @@ const uri =
     process.env.ATLAS_USER +
     ':' +
     process.env.ATLAS_PASS +
-    '@first-cluster.r9nhd.mongodb.net/' +
+    process.env.ATLAS_CLUSTER +
     process.env.ATLAS_DB +
     '?retryWrites=true&w=majority';
 
