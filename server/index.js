@@ -46,6 +46,13 @@ require('./routes/authRoutes')(app);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
 
+// const fetchAlbums = async () => {
+//     const res = await fetch('https://rallycoding.herokuapp.com/api/music_albums');
+//     const json = await res.json();
+
+//     console.log(json);
+// };
+
 // async function fetchAlbums() {
 //     const res = await fetch('https://rallycoding.herokuapp.com/api/music_albums');
 //     const json = await res.json();

@@ -25,30 +25,21 @@ passport.use(
         callbackURL: "/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
         proxy: true
-    }, (accessToken, refreshToken, profile, done) => {
-        // console.log(profile.id);
-        const potentialUser = { googleId: profile.id };
+    },
+        async (accessToken, refreshToken, profile, done) => {
+            // console.log(profile.id);
+            const potentialUser = { googleId: profile.id };
 
-        User.findOne(potentialUser, (err, foundUser) => {
-            if (err) {
-                return done(err);
-            } else {
-                if (foundUser) {
-                    console.log(foundUser);
-                    return done(null, foundUser);
-                }
-                else {
-                    foundUser = new User(potentialUser);
-                    foundUser.save((err) => {
-                        if (err) {
-                            return done(err);
-                        } else {
-                            return done(err, foundUser);
-                        }
-                    });
-                }
+            const foundUser = await User.findOne(potentialUser);
+
+            if (foundUser) {
+                console.log(foundUser);
+                return done(null, foundUser);
             }
-        });
+            else {
+                const user = await new User(potentialUser).save();
+                done(null, user);
+            }
 
-    })
+        })
 );
