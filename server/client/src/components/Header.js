@@ -6,11 +6,15 @@ class Header extends Component {
     renderContent() {
         switch (this.props.auth) {
             case null:
-                return 'Still deciding';
+                return;
             case false:
-                return 'im loggedout';
+                return (
+                    <li><a href="/auth/google"> Login with Google</a></li>
+                );
             default:
-                return 'im logged in';
+                return (
+                    <li><a href="/api/logout">Logout</a>/</li>
+                );
 
         }
     }
@@ -22,7 +26,6 @@ class Header extends Component {
                 <div className="nav-wrapper">
                     <a className="left brand-logo" href="/">Emaily</a>
                     <ul className="right">
-                        {/* <a href="/auth/google"> Login with Google</a> */}
                         {this.renderContent()}
                     </ul>
                 </div>
