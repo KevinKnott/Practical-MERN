@@ -8,6 +8,7 @@ import reduxThunk from 'redux-thunk';
 import * as serviceWorker from './serviceWorker';
 import App from './components/App';
 import reducers from './reducers';
+require('dotenv').config();
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
@@ -18,6 +19,8 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+
+console.log('Stripe Key is', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
